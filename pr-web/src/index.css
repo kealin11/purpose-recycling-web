@@ -21,14 +21,9 @@ h1, h2, h3 {
   margin: 0;
   font-weight: 600;
 }
-  display: inline-flex;
-  border-radius: 4px;
-  color: var(--text-h);
-}
 
 code {
   font-size: 15px;
   line-height: 135%;
   padding: 4px 8px;
-  background: var(--code-bg);
 }
