@@ -61,21 +61,21 @@ function App() {
       name: 'Audrey Caster',
       position: 'Managing Director',
       image: '/Meet The Team/Audrey Caster.jpg',
-    
+      category: 'Leadership'
     },
     {
       id: 2,
       name: 'Shannon Boer',
       position: 'Director & Project Manager',
       image: '/Meet The Team/Shannon Boer.jpg',
-    
+      category: 'Leadership'
     },
     {
       id: 3,
       name: 'Shanton Jacobs',
       position: 'Site Manager',
       image: '/Meet The Team/Shanton Jacobs.jpg',
-    
+      category: 'Leadership'
     },
     {
       id: 4,
