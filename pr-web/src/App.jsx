@@ -296,12 +296,10 @@ function App() {
 
   const contactDetails = {
     phones: [
-      { label: 'Audrey', value: '072 336 9934', href: 'tel:+27723369934' },
-      { label: 'Shannon', value: '062 543 9458', href: 'tel:+27625439458' }
+      { label: 'Office', value: '+27 67 862 4747', href: 'tel:+27678624747' }
     ],
     emails: [
-      { label: 'Audrey', value: 'audreycaster4@gmail.com', href: 'mailto:audreycaster4@gmail.com' },
-      { label: 'Shannon', value: 'shannonboer99@gmail.com', href: 'mailto:shannonboer99@gmail.com' }
+      { label: 'Info', value: 'info@purposerecycling.co.za', href: 'mailto:info@purposerecycling.co.za' }
     ],
     address: '25 Industrial Crescent, Eldorado Park, Extension 5, Johannesburg, 1811',
     mapHref: 'https://www.google.com/maps/search/?api=1&query=25+Industrial+Crescent,+Eldorado+Park,+Extension+5,+Johannesburg,+1811',
@@ -320,7 +318,6 @@ function App() {
         <div className="navbar-container">
           <a href="#home" className="logo-section" aria-label="Purpose Recycling home">
             <img src="/pr-logo.png" alt="Purpose Recycling" className="navbar-logo" />
-            <span className="logo-badge">Purpose Recycling</span>
           </a>
           <button
             className="menu-toggle"
@@ -357,10 +354,49 @@ function App() {
           ))}
         </div>
         <div className="hero-overlay"></div>
-        <div className="hero-content">
-          <h1>Let's Create A Greener, Cleaner South Africa</h1>
-          <p>Join 500+ households in our mission to reduce landfill waste and build a sustainable future</p>
-          <a href="#contact" className="hero-button">Contact Us</a>
+      </section>
+
+      {/* About Us Section */}
+      <section id="about" className="about">
+        <div className="container">
+          <div className="about-content">
+            <div className="about-text">
+              <span className="section-kicker">Who We Are</span>
+              <h2>About Purpose Recycling</h2>
+              <p className="highlight">Purpose Recycling is a socially responsible organization committed to developing effective waste management solutions that leave communities cleaner, stronger, and more connected.</p>
+              
+              <div className="about-blocks">
+                <div className="block">
+                  <h3>🎯 Our Vision</h3>
+                  <p>A waste-free future where recycling and sustainability are integral to everyday life. We aim to revolutionize waste management practices and promote a healthier environment.</p>
+                </div>
+                
+                <div className="block">
+                  <h3>💡 Our Mission</h3>
+                  <p>As people of faith, we believe that protecting the Earth is a divine imperative. We're committed to honoring this sacred trust, caring for the Earth, and preserving its beauty for future generations.</p>
+                </div>
+              </div>
+
+              <h3 className="values-title">Our Values</h3>
+              <ul className="values-list">
+                <li><strong>P</strong> – Passionate about Sustainability</li>
+                <li><strong>U</strong> – Unwavering Commitment</li>
+                <li><strong>R</strong> – Responsible Stewardship</li>
+                <li><strong>P</strong> – Partnerships for Progress</li>
+                <li><strong>O</strong> – Outstanding Quality</li>
+                <li><strong>S</strong> – Sustainable Solutions</li>
+                <li><strong>E</strong> – Educating and Empowering</li>
+              </ul>
+            </div>
+            <div className="about-media">
+              <div className="about-image about-image-primary">
+                <img src="/About Us/Team Photo.png" alt="Purpose Recycling team together outdoors" />
+              </div>
+              <div className="about-image about-image-secondary">
+                <img src="/About Us/Team Photo 2.png" alt="Purpose Recycling team supporting community recycling efforts" />
+              </div>
+            </div>
+          </div>
         </div>
       </section>
 
@@ -387,47 +423,12 @@ function App() {
         </div>
       </section>
 
-      {/* About Us Section */}
-      <section id="about" className="about">
-        <div className="container">
-          <div className="about-content">
-            <div className="about-text">
-              <span className="section-kicker">Who We Are</span>
-              <h2>About Purpose Recycling</h2>
-              <p className="highlight">Purpose Recycling is a socially responsible organization committed to developing effective waste management solutions that leave communities cleaner, stronger, and more connected.</p>
-              
-              <div className="about-blocks">
-                <div className="block">
-                  <h3>🎯 Our Vision</h3>
-                  <p>A waste-free future where recycling and sustainability are integral to everyday life. We aim to revolutionize waste management practices and promote a healthier environment.</p>
-                </div>
-                
-                <div className="block">
-                  <h3>💡 Our Mission</h3>
-                  <p>As people of faith, we believe that protecting the Earth is a divine imperative. We're committed to honoring this sacred trust, caring for the Earth, and preserving its beauty for future generations.</p>
-                </div>
-              </div>
-
-              <h3 className="values-title">Our P.U.R.P.O.S.E Values</h3>
-              <ul className="values-list">
-                <li><strong>P</strong> – Passionate about Sustainability</li>
-                <li><strong>U</strong> – Unwavering Commitment</li>
-                <li><strong>R</strong> – Responsible Stewardship</li>
-                <li><strong>P</strong> – Partnerships for Progress</li>
-                <li><strong>O</strong> – Outstanding Quality</li>
-                <li><strong>S</strong> – Sustainable Solutions</li>
-                <li><strong>E</strong> – Educating and Empowering</li>
-              </ul>
-            </div>
-            <div className="about-media">
-              <div className="about-image about-image-primary">
-                <img src="/About Us/Team Photo.png" alt="Purpose Recycling team together outdoors" />
-              </div>
-              <div className="about-image about-image-secondary">
-                <img src="/About Us/Team Photo 2.png" alt="Purpose Recycling team supporting community recycling efforts" />
-              </div>
-            </div>
-          </div>
+      {/* Call to Action Section */}
+      <section className="cta-section">
+        <div className="cta-container">
+          <h2>Let's Create A Cleaner, Greener South Africa</h2>
+          <p>Join our mission to reduce landfill waste and build a more sustainable future.</p>
+          <a href="#contact" className="hero-button">Contact Us</a>
         </div>
       </section>
 
@@ -447,7 +448,6 @@ function App() {
                   <img src={member.image} alt={member.name} className="team-image" />
                 </div>
                 <div className="team-card-body">
-                  <span className="team-badge">Leadership</span>
                   <h3>{member.name}</h3>
                   <p className="position">{member.position}</p>
                 </div>
@@ -600,7 +600,7 @@ function App() {
                     <h3>Phone</h3>
                     {contactDetails.phones.map((phone) => (
                       <a key={phone.value} href={phone.href} className="contact-link">
-                        {phone.label} - {phone.value}
+                        {phone.value}
                       </a>
                     ))}
                   </div>
@@ -651,7 +651,7 @@ function App() {
             <div className="contact-side">
               <form
                 className="contact-form"
-                action="https://formsubmit.co/audreycaster4@gmail.com"
+                action="https://formsubmit.co/info@purposerecycling.co.za"
                 method="POST"
               >
                 <input type="hidden" name="_subject" value="New Purpose Recycling website enquiry" />
@@ -865,9 +865,8 @@ function App() {
             </div>
             <div className="footer-section">
               <h3>Contact</h3>
-              <p>Email: audreycaster4@gmail.com</p>
-              <p>Email: shannonboer99@gmail.com</p>
-              <p>Phone: 072 336 9934 / 062 543 9458</p>
+              <p>Email: info@purposerecycling.co.za</p>
+              <p>Phone: +27 67 862 4747</p>
               <p>25 Industrial Crescent, Eldorado Park, Extension 5, Johannesburg, 1811</p>
             </div>
           </div>

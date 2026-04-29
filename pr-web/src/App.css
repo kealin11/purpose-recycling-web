@@ -5,16 +5,16 @@
 }
 
 :root {
-  --primary-green: #2D8659;
-  --primary-yellow: #CDDC39;
+  --primary-green: #2f945c;
+  --primary-yellow: #ffcb12;
   --dark-green: #1a5c3d;
   --light-green: #4aaf6f;
   --accent-white: #ffffff;
   --glass-white: rgba(255, 255, 255, 0.72);
   --glass-border: rgba(255, 255, 255, 0.48);
   --glass-shadow: 0 18px 45px rgba(18, 52, 37, 0.16);
-  --text-dark: #1a1a1a;
-  --text-light: #666666;
+  --text-dark: #555555;
+  --text-light: #777777;
   --border-light: #e0e0e0;
   --gradient: linear-gradient(135deg, var(--primary-green) 0%, var(--primary-yellow) 100%);
 }
@@ -107,7 +107,7 @@ body {
 
 .nav-menu a {
   text-decoration: none;
-  color: rgba(26, 26, 26, 0.88);
+  color: rgba(85, 85, 85, 0.88);
   font-weight: 700;
   transition: all 0.3s ease;
   position: relative;
@@ -185,7 +185,7 @@ body {
 
 /* Hero Section */
 .hero {
-  background: #163524;
+  background: #4aaf6f;
   color: var(--accent-white);
   padding: 28px 20px 100px;
   text-align: center;
@@ -320,12 +320,13 @@ body {
   padding: 8px 14px;
   margin-bottom: 16px;
   border-radius: 999px;
-  background: rgba(45, 134, 89, 0.1);
-  color: var(--dark-green);
+  background: var(--gradient);
+  color: var(--accent-white);
   font-size: 12px;
   font-weight: 700;
   letter-spacing: 0.12em;
   text-transform: uppercase;
+  box-shadow: 0 10px 22px rgba(45, 134, 89, 0.18);
 }
 
 .services h2 {
@@ -379,7 +380,10 @@ body {
 }
 
 .service-card h3 {
-  color: var(--primary-green);
+  background: var(--gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
   font-size: 22px;
   margin-bottom: 10px;
 }
@@ -394,14 +398,65 @@ body {
   display: inline-flex;
   align-items: center;
   margin-bottom: 16px;
-  background: rgba(205, 220, 57, 0.18);
-  color: var(--dark-green);
+  background: rgba(255, 203, 18, 0.18);
+  color: var(--primary-green);
   padding: 7px 14px;
   border-radius: 999px;
   font-size: 12px;
   font-weight: 700;
   letter-spacing: 0.08em;
   text-transform: uppercase;
+}
+
+/* Call to Action Section */
+.cta-section {
+  padding: 80px 20px;
+  background: var(--gradient);
+  text-align: center;
+  color: var(--accent-white);
+}
+
+.cta-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 40px;
+  border-radius: 28px;
+  background: rgba(255, 255, 255, 0.16);
+  border: 1px solid rgba(255, 255, 255, 0.34);
+  box-shadow: 0 22px 48px rgba(20, 52, 36, 0.16);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+.cta-section h2 {
+  font-size: 48px;
+  font-weight: 800;
+  margin-bottom: 20px;
+  line-height: 1.2;
+}
+
+.cta-section p {
+  font-size: 20px;
+  margin-bottom: 32px;
+  opacity: 0.95;
+}
+
+.cta-section .hero-button {
+  background: var(--accent-white);
+  color: var(--primary-green);
+  padding: 15px 40px;
+  border-radius: 30px;
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 16px;
+  display: inline-block;
+  transition: all 0.3s ease;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+}
+
+.cta-section .hero-button:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
 }
 
 /* About Section */
@@ -434,7 +489,7 @@ body {
 
 .about-text .highlight {
   font-size: 18px;
-  color: var(--dark-green);
+  color: var(--text-light);
   font-weight: 600;
   line-height: 1.8;
   margin-bottom: 28px;
@@ -457,7 +512,10 @@ body {
 }
 
 .block h3 {
-  color: var(--primary-green);
+  background: var(--gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
   margin-bottom: 12px;
   font-size: 20px;
 }
@@ -468,7 +526,10 @@ body {
 }
 
 .values-title {
-  color: var(--primary-green);
+  background: var(--gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
   margin-top: 30px;
   margin-bottom: 18px;
   font-size: 22px;
@@ -491,7 +552,10 @@ body {
 }
 
 .values-list strong {
-  color: var(--primary-green);
+  background: var(--gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
 .about-media {
@@ -608,23 +672,11 @@ body {
   padding: 22px 22px 24px;
 }
 
-.team-badge {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  margin-bottom: 14px;
-  padding: 7px 14px;
-  border-radius: 999px;
-  background: rgba(205, 220, 57, 0.18);
-  color: var(--dark-green);
-  font-size: 12px;
-  font-weight: 700;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-}
-
 .team-card h3 {
-  color: var(--primary-green);
+  background: var(--gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
   font-size: 22px;
   font-weight: 700;
   margin-bottom: 10px;
@@ -758,7 +810,7 @@ body {
 }
 
 .knowledge-card h3 {
-  color: var(--primary-green);
+  color: var(--text-light);
   font-size: 22px;
   font-weight: 700;
   margin-bottom: 10px;
@@ -766,7 +818,7 @@ body {
 
 .knowledge-card .headline {
   font-size: 15px;
-  color: var(--dark-green);
+  color: var(--text-light);
   font-weight: 700;
   line-height: 1.6;
   margin-bottom: 12px;
@@ -781,7 +833,7 @@ body {
 }
 
 .knowledge-card .fact {
-  color: var(--dark-green);
+  color: var(--text-light);
   font-size: 14px;
   line-height: 1.7;
   margin-bottom: 18px;
@@ -856,13 +908,16 @@ body {
 }
 
 .knowledge-modal-body h3 {
-  color: var(--primary-green);
+  background: var(--gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
   font-size: 34px;
   margin: 16px 0 10px;
 }
 
 .knowledge-modal-headline {
-  color: var(--dark-green);
+  color: var(--text-light);
   font-size: 18px;
   font-weight: 700;
   line-height: 1.7;
@@ -874,7 +929,10 @@ body {
 }
 
 .knowledge-modal-section h4 {
-  color: var(--primary-green);
+  background: var(--gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
   font-size: 18px;
   margin-bottom: 8px;
 }
@@ -921,7 +979,7 @@ body {
   background: rgba(255, 255, 255, 0.92);
   border-radius: 28px;
   padding: 32px;
-  border: 1px solid rgba(45, 134, 89, 0.1);
+  border: 1px solid rgba(76, 86, 81, 0.12);
   box-shadow: 0 20px 44px rgba(20, 52, 36, 0.08);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
@@ -940,7 +998,8 @@ body {
   align-items: start;
   padding: 20px;
   border-radius: 22px;
-  background: linear-gradient(135deg, rgba(45, 134, 89, 0.08), rgba(205, 220, 57, 0.08));
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.96), rgba(246, 248, 247, 0.96));
+  border: 1px solid rgba(76, 86, 81, 0.1);
 }
 
 .contact-icon {
@@ -950,8 +1009,8 @@ body {
   min-height: 48px;
   padding: 12px 10px;
   border-radius: 18px;
-  background: rgba(255, 255, 255, 0.88);
-  color: var(--dark-green);
+  background: var(--gradient);
+  color: var(--accent-white);
   font-size: 12px;
   font-weight: 700;
   letter-spacing: 0.08em;
@@ -960,7 +1019,10 @@ body {
 
 .contact-item h3,
 .contact-socials h3 {
-  color: var(--primary-green);
+  background: var(--gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
   font-size: 20px;
   margin-bottom: 10px;
 }
@@ -1003,7 +1065,10 @@ body {
 }
 
 .contact-social-name {
-  color: var(--dark-green);
+  background: var(--gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
   font-size: 16px;
   font-weight: 700;
 }
@@ -1032,7 +1097,10 @@ body {
 
 .contact-form h3,
 .contact-map-card h3 {
-  color: var(--primary-green);
+  background: var(--gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
   font-size: 24px;
   margin-bottom: 10px;
 }
@@ -1341,6 +1409,22 @@ body {
     grid-template-columns: 1fr;
     gap: 25px;
   }
+
+  .cta-section {
+    padding: 60px 20px;
+  }
+
+  .cta-container {
+    padding: 30px 20px;
+  }
+
+  .cta-section h2 {
+    font-size: 32px;
+  }
+
+  .cta-section p {
+    font-size: 16px;
+  }
 }
 
 @media (max-width: 480px) {
@@ -1398,5 +1482,13 @@ body {
 
   .contact-map {
     height: 220px;
+  }
+
+  .cta-section h2 {
+    font-size: 24px;
+  }
+
+  .cta-section p {
+    font-size: 14px;
   }
 }
