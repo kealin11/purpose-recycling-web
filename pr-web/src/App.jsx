@@ -329,8 +329,8 @@ function App() {
           </button>
           <nav className={`nav-menu ${isMenuOpen ? 'active' : ''}`}>
             <a href="#home">Home</a>
-            <a href="#services">Services</a>
             <a href="#about">About Us</a>
+            <a href="#services">Services</a>
             <a href="#team">Team</a>
             <a href="#partners">Our Partners</a>
             <a href="#knowledge">Recycling Knowledge</a>
