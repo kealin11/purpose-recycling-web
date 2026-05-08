@@ -209,12 +209,18 @@ function App() {
     },
     {
       id: 10,
+      name: 'Greenway Africa',
+      logo: '/Our Partners/greenway africa Logos.png',
+      website: 'https://greenwayafrica.co.za/'
+    },
+    {
+      id: 11,
       name: 'Unica',
       logo: '/Our Partners/UNICA.jpg',
       website: 'https://plastics.unica.co.za/'
     },
     {
-      id: 11,
+      id: 12,
       name: 'Phambili Services',
       logo: '/Our Partners/PS.jpg',
       website: 'https://phambiliservices.co.za/'
