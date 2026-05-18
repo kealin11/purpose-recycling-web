@@ -1,9 +1,12 @@
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 import './App.css'
+import { LazyImage } from './components/LazyImage'
+import { useOptimizedSlider } from './hooks/useOptimizations'
 
 function App() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const [selectedMaterial, setSelectedMaterial] = useState(null)
+  const preloadedImagesRef = useRef(new Set())
 
   const headerSlides = [
     '/Header/1st Page.png',
@@ -12,6 +15,23 @@ function App() {
     '/Header/4TH Page.png',
     '/Header/Last Page.png'
   ]
+
+  // Preload images for smooth transitions
+  const preloadImage = (imageSrc) => {
+    if (preloadedImagesRef.current.has(imageSrc)) return
+
+    const img = new Image()
+    img.src = imageSrc
+    preloadedImagesRef.current.add(imageSrc)
+  }
+
+  // Use optimized slider hook that preloads next slide
+  const {
+    activeSlide,
+    goToSlide,
+    nextSlide: showNextSlide,
+    prevSlide: showPreviousSlide
+  } = useOptimizedSlider(headerSlides, 6000)
 
   const services = [
     {
@@ -323,7 +343,7 @@ function App() {
       <header className="navbar">
         <div className="navbar-container">
           <a href="#home" className="logo-section" aria-label="Purpose Recycling home">
-            <img src="/pr-logo.png" alt="Purpose Recycling" className="navbar-logo" />
+            <img src="/site-icon-logo-transparent.png" alt="Purpose Recycling" className="navbar-logo" />
           </a>
           <button
             className="menu-toggle"
@@ -347,19 +367,58 @@ function App() {
 
       {/* Hero Section */}
       <section id="home" className="hero">
-        <div className="hero-slides" aria-hidden="true">
-          {headerSlides.map((image, index) => (
+        <div className="hero-slides" aria-live="polite" aria-label="Header image carousel">
+          {/* Only render active slide + next slide for performance */}
+          {[activeSlide, (activeSlide + 1) % headerSlides.length].map((index) => (
             <div
-              key={image}
-              className="hero-slide"
+              key={`slide-${index}`}
+              className={`hero-slide ${index === activeSlide ? 'active' : ''}`}
+              aria-hidden={index !== activeSlide}
               style={{
-                backgroundImage: `url("${image}")`,
-                animationDelay: `${index * 5}s`
+                backgroundImage: `url("${headerSlides[index]}")`
               }}
+              role="img"
+              aria-label={`Header slide ${index + 1}`}
             />
           ))}
         </div>
         <div className="hero-overlay"></div>
+        <div className="hero-controls" aria-label="Header slider controls">
+          <button
+            type="button"
+            className="hero-arrow hero-arrow-left"
+            aria-label="Show previous slide"
+            onClick={showPreviousSlide}
+          >
+            ‹
+          </button>
+          <div className="hero-dots" role="tablist" aria-label="Choose header slide">
+            {headerSlides.map((image, index) => (
+              <button
+                key={`dot-${index}`}
+                type="button"
+                className={`hero-dot ${index === activeSlide ? 'active' : ''}`}
+                aria-label={`Show slide ${index + 1} of ${headerSlides.length}`}
+                aria-selected={index === activeSlide}
+                role="tab"
+                onClick={() => {
+                  goToSlide(index)
+                  // Preload next slide
+                  const nextIndex = (index + 1) % headerSlides.length
+                  preloadImage(headerSlides[nextIndex])
+                }}
+              />
+            ))}
+          </div>
+          <button
+            type="button"
+            className="hero-arrow hero-arrow-right"
+            aria-label="Show next slide"
+            onClick={showNextSlide}
+          >
+            ›
+          </button>
+        </div>
       </section>
 
       {/* About Us Section */}
@@ -396,10 +455,10 @@ function App() {
             </div>
             <div className="about-media">
               <div className="about-image about-image-primary">
-                <img src="/About Us/Team Photo.png" alt="Purpose Recycling team together outdoors" />
+                <LazyImage src="/About Us/Team Photo.png" alt="Purpose Recycling team together outdoors" />
               </div>
               <div className="about-image about-image-secondary">
-                <img src="/About Us/Team Photo 2.png" alt="Purpose Recycling team supporting community recycling efforts" />
+                <LazyImage src="/About Us/Team Photo 2.png" alt="Purpose Recycling team supporting community recycling efforts" />
               </div>
             </div>
           </div>
@@ -417,7 +476,7 @@ function App() {
           <div className="services-grid">
             {services.map(service => (
               <div key={service.id} className="service-card">
-                <img src={service.image} alt={service.title} />
+                <LazyImage src={service.image} alt={service.title} />
                 <div className="service-card-body">
                   {service.day && <span className="day-badge">{service.day}</span>}
                   <h3>{service.title}</h3>
@@ -430,12 +489,13 @@ function App() {
       </section>
 
       {/* Call to Action Section */}
-      <section className="cta-section">
-        <div className="cta-container">
-          <h2>Let's Create A Cleaner, Greener South Africa</h2>
-          <p>Join our mission to reduce landfill waste and build a more sustainable future.</p>
-          <a href="#contact" className="hero-button">Contact Us</a>
-        </div>
+      <section className="cta-section" aria-label="Join Purpose Recycling households">
+        <a href="#contact" className="cta-container">
+          <p className="cta-copy">By living these values, Purpose Recycling aims to make a meaningful impact in the communities we serve, promoting a cleaner, healthier, and more sustainable future for all.</p>
+          <span className="cta-stat">Join 500+ Households</span>
+          <h2>Let's Create A Greener, Cleaner South Africa.</h2>
+          <span className="hero-button">Contact Us</span>
+        </a>
       </section>
 
       {/* Meet the Team Section */}
@@ -451,7 +511,7 @@ function App() {
             {leadershipTeam.map(member => (
               <div key={member.id} className="team-card team-card-leadership">
                 <div className="team-image-wrapper">
-                  <img src={member.image} alt={member.name} className="team-image" />
+                  <LazyImage src={member.image} alt={member.name} className="team-image" />
                 </div>
                 <div className="team-card-body">
                   <h3>{member.name}</h3>
@@ -465,7 +525,7 @@ function App() {
             {operationsTeam.map(member => (
               <div key={member.id} className="team-card">
                 <div className="team-image-wrapper">
-                  <img src={member.image} alt={member.name} className="team-image" />
+                  <LazyImage src={member.image} alt={member.name} className="team-image" />
                 </div>
                 <div className="team-card-body">
                   <h3>{member.name}</h3>
@@ -492,7 +552,7 @@ function App() {
                 rel="noreferrer"
                 aria-label={`Visit ${partner.name}`}
               >
-                <img src={partner.logo} alt={partner.name} className="partner-logo" />
+                <LazyImage src={partner.logo} alt={partner.name} className="partner-logo" />
               </a>
             ))}
           </div>
@@ -510,7 +570,7 @@ function App() {
           <div className="knowledge-grid">
             {recyclingMaterials.map((material) => (
               <div key={material.id} className="knowledge-card">
-                <img src={material.image} alt={material.title} />
+                <LazyImage src={material.image} alt={material.title} />
                 <div className="knowledge-card-body">
                   <h3>{material.title}</h3>
                   <p className="headline">{material.headline}</p>
@@ -547,7 +607,7 @@ function App() {
             >
               ×
             </button>
-            <img
+            <LazyImage
               src={selectedMaterial.image}
               alt={selectedMaterial.title}
               className="knowledge-modal-image"
@@ -719,7 +779,7 @@ function App() {
         </div>
       </section>
 
-      {false && (
+      {/*
       <section id="signup" className="signup">
         <div className="container">
           <h2>Join Our Mission</h2>
@@ -847,7 +907,7 @@ function App() {
           </form>
         </div>
       </section>
-      )}
+      */}
 
       {/* Footer */}
       <footer className="footer">
