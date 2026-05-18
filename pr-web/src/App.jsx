@@ -1,12 +1,12 @@
-import { useRef, useState } from 'react'
+import { useState } from 'react'
 import './App.css'
 import { LazyImage } from './components/LazyImage'
 import { useOptimizedSlider } from './hooks/useOptimizations'
+import { getOptimizedImage } from './imageUtils'
 
 function App() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const [selectedMaterial, setSelectedMaterial] = useState(null)
-  const preloadedImagesRef = useRef(new Set())
 
   const headerSlides = [
     '/Header/1st Page.png',
@@ -16,22 +16,13 @@ function App() {
     '/Header/Last Page.png'
   ]
 
-  // Preload images for smooth transitions
-  const preloadImage = (imageSrc) => {
-    if (preloadedImagesRef.current.has(imageSrc)) return
-
-    const img = new Image()
-    img.src = imageSrc
-    preloadedImagesRef.current.add(imageSrc)
-  }
-
-  // Use optimized slider hook that preloads next slide
   const {
     activeSlide,
     goToSlide,
     nextSlide: showNextSlide,
     prevSlide: showPreviousSlide
   } = useOptimizedSlider(headerSlides, 6000)
+  const activeHeroImage = getOptimizedImage(headerSlides[activeSlide])
 
   const services = [
     {
@@ -343,7 +334,14 @@ function App() {
       <header className="navbar">
         <div className="navbar-container">
           <a href="#home" className="logo-section" aria-label="Purpose Recycling home">
-            <img src="/site-icon-logo-transparent.png" alt="Purpose Recycling" className="navbar-logo" />
+            <LazyImage
+              src="/site-icon-logo-transparent.png"
+              alt="Purpose Recycling"
+              className="navbar-logo"
+              priority
+              width="76"
+              height="76"
+            />
           </a>
           <button
             className="menu-toggle"
@@ -368,19 +366,25 @@ function App() {
       {/* Hero Section */}
       <section id="home" className="hero">
         <div className="hero-slides" aria-live="polite" aria-label="Header image carousel">
-          {/* Only render active slide + next slide for performance */}
-          {[activeSlide, (activeSlide + 1) % headerSlides.length].map((index) => (
-            <div
-              key={`slide-${index}`}
-              className={`hero-slide ${index === activeSlide ? 'active' : ''}`}
-              aria-hidden={index !== activeSlide}
-              style={{
-                backgroundImage: `url("${headerSlides[index]}")`
-              }}
-              role="img"
-              aria-label={`Header slide ${index + 1}`}
+          <div
+            key={`slide-${activeSlide}`}
+            className="hero-slide active"
+            role="img"
+            aria-label={`Header slide ${activeSlide + 1}`}
+          >
+            <img
+              src={activeHeroImage.src}
+              srcSet={activeHeroImage.srcSet}
+              sizes={activeHeroImage.sizes}
+              alt=""
+              className="hero-slide-image"
+              width={activeHeroImage.width}
+              height={activeHeroImage.height}
+              loading={activeSlide === 0 ? 'eager' : 'lazy'}
+              fetchPriority={activeSlide === 0 ? 'high' : 'auto'}
+              decoding="async"
             />
-          ))}
+          </div>
         </div>
         <div className="hero-overlay"></div>
         <div className="hero-controls" aria-label="Header slider controls">
@@ -401,12 +405,7 @@ function App() {
                 aria-label={`Show slide ${index + 1} of ${headerSlides.length}`}
                 aria-selected={index === activeSlide}
                 role="tab"
-                onClick={() => {
-                  goToSlide(index)
-                  // Preload next slide
-                  const nextIndex = (index + 1) % headerSlides.length
-                  preloadImage(headerSlides[nextIndex])
-                }}
+                onClick={() => goToSlide(index)}
               />
             ))}
           </div>

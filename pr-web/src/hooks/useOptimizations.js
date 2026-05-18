@@ -11,51 +11,28 @@ import { useEffect, useRef, useState, useCallback } from 'react'
 export function useOptimizedSlider(slides, autoPlayInterval = 6000) {
   const [activeSlide, setActiveSlide] = useState(0)
   const slideTimerRef = useRef(null)
-  const preloadedImagesRef = useRef(new Set())
-
-  // Preload an image
-  const preloadImage = useCallback((imageSrc) => {
-    if (preloadedImagesRef.current.has(imageSrc)) return
-
-    const img = new Image()
-    img.src = imageSrc
-    preloadedImagesRef.current.add(imageSrc)
-  }, [])
 
   // Navigate to specific slide
   const goToSlide = useCallback((slideIndex) => {
     setActiveSlide(slideIndex)
-    
-    // Preload the next slide
-    const nextIndex = (slideIndex + 1) % slides.length
-    preloadImage(slides[nextIndex])
-  }, [slides, preloadImage])
+  }, [])
 
   // Move to next slide
   const nextSlide = useCallback(() => {
     setActiveSlide((current) => {
-      const next = (current + 1) % slides.length
-      const nextNext = (next + 1) % slides.length
-      preloadImage(slides[nextNext])
-      return next
+      return (current + 1) % slides.length
     })
-  }, [slides, preloadImage])
+  }, [slides])
 
   // Move to previous slide
   const prevSlide = useCallback(() => {
     setActiveSlide((current) => {
-      const prev = current === 0 ? slides.length - 1 : current - 1
-      const prevNext = (prev + 1) % slides.length
-      preloadImage(slides[prevNext])
-      return prev
+      return current === 0 ? slides.length - 1 : current - 1
     })
-  }, [slides, preloadImage])
+  }, [slides])
 
   // Auto-play effect
   useEffect(() => {
-    // Preload first slide
-    preloadImage(slides[0])
-
     if (autoPlayInterval > 0) {
       slideTimerRef.current = window.setInterval(nextSlide, autoPlayInterval)
     }
@@ -65,14 +42,13 @@ export function useOptimizedSlider(slides, autoPlayInterval = 6000) {
         window.clearInterval(slideTimerRef.current)
       }
     }
-  }, [autoPlayInterval, nextSlide, slides, preloadImage])
+  }, [autoPlayInterval, nextSlide])
 
   return {
     activeSlide,
     goToSlide,
     nextSlide,
-    prevSlide,
-    preloadedImages: preloadedImagesRef.current
+    prevSlide
   }
 }
 
@@ -84,6 +60,7 @@ export function useIntersectionObserver(ref, options = {}) {
   const [isVisible, setIsVisible] = useState(false)
 
   useEffect(() => {
+    const observedNode = ref.current
     const observer = new IntersectionObserver(([entry]) => {
       if (entry.isIntersecting) {
         setIsVisible(true)
@@ -95,13 +72,13 @@ export function useIntersectionObserver(ref, options = {}) {
       ...options
     })
 
-    if (ref.current) {
-      observer.observe(ref.current)
+    if (observedNode) {
+      observer.observe(observedNode)
     }
 
     return () => {
-      if (ref.current) {
-        observer.unobserve(ref.current)
+      if (observedNode) {
+        observer.unobserve(observedNode)
       }
     }
   }, [ref, options])

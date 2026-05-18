@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
+import { getOptimizedImage } from '../imageUtils'
 
 /**
  * LazyImage Component
@@ -6,23 +7,26 @@ import { useEffect, useRef, useState } from 'react'
  * Supports blur-up effect for smooth loading experience
  */
 export function LazyImage({ src, alt, className = '', onLoad, priority = false, width, height }) {
-  const [isLoaded, setIsLoaded] = useState(false)
-  const [imageSrc, setImageSrc] = useState(null)
+  const [loadedSrc, setLoadedSrc] = useState(null)
+  const [isInView, setIsInView] = useState(false)
   const imgRef = useRef(null)
+  const optimizedImage = getOptimizedImage(src)
+  const shouldLoad = priority || isInView
+  const imageSrc = shouldLoad ? optimizedImage.src : undefined
+  const isLoaded = loadedSrc === optimizedImage.src
 
   useEffect(() => {
-    // If priority or already loaded, load immediately
-    if (priority) {
-      setImageSrc(src)
+    if (priority || isInView) {
       return
     }
 
     // Use Intersection Observer for lazy loading
+    const imageNode = imgRef.current
     const observer = new IntersectionObserver(
       entries => {
         entries.forEach(entry => {
           if (entry.isIntersecting) {
-            setImageSrc(src)
+            setIsInView(true)
             observer.unobserve(entry.target)
           }
         })
@@ -33,19 +37,19 @@ export function LazyImage({ src, alt, className = '', onLoad, priority = false, 
       }
     )
 
-    if (imgRef.current) {
-      observer.observe(imgRef.current)
+    if (imageNode) {
+      observer.observe(imageNode)
     }
 
     return () => {
-      if (imgRef.current) {
-        observer.unobserve(imgRef.current)
+      if (imageNode) {
+        observer.unobserve(imageNode)
       }
     }
-  }, [src, priority])
+  }, [priority, isInView])
 
   const handleImageLoad = () => {
-    setIsLoaded(true)
+    setLoadedSrc(optimizedImage.src)
     if (onLoad) onLoad()
   }
 
@@ -53,12 +57,16 @@ export function LazyImage({ src, alt, className = '', onLoad, priority = false, 
     <img
       ref={imgRef}
       src={imageSrc}
+      srcSet={imageSrc ? optimizedImage.srcSet : undefined}
+      sizes={imageSrc ? optimizedImage.sizes : undefined}
       alt={alt}
       className={`${className} ${isLoaded ? 'loaded' : 'loading'}`}
       onLoad={handleImageLoad}
-      width={width}
-      height={height}
+      width={width ?? optimizedImage.width}
+      height={height ?? optimizedImage.height}
       loading={priority ? 'eager' : 'lazy'}
+      fetchPriority={priority ? 'high' : 'auto'}
+      decoding="async"
     />
   )
 }
@@ -68,29 +76,36 @@ export function LazyImage({ src, alt, className = '', onLoad, priority = false, 
  * For CSS background images with lazy loading
  */
 export function LazyBackgroundImage({ src, children, className = '', onLoad, priority = false }) {
-  const [backgroundImage, setBackgroundImage] = useState(null)
   const [isLoaded, setIsLoaded] = useState(false)
+  const [isInView, setIsInView] = useState(false)
   const containerRef = useRef(null)
+  const optimizedImage = getOptimizedImage(src)
+  const shouldLoad = priority || isInView
 
   useEffect(() => {
-    if (priority) {
-      setBackgroundImage(src)
-      setIsLoaded(true)
+    if (!shouldLoad) {
       return
     }
 
+    const img = new Image()
+    img.onload = () => {
+      setIsLoaded(true)
+      if (onLoad) onLoad()
+    }
+    img.src = optimizedImage.src
+  }, [shouldLoad, optimizedImage.src, onLoad])
+
+  useEffect(() => {
+    if (shouldLoad) {
+      return
+    }
+
+    const containerNode = containerRef.current
     const observer = new IntersectionObserver(
       entries => {
         entries.forEach(entry => {
           if (entry.isIntersecting) {
-            // Preload image
-            const img = new Image()
-            img.onload = () => {
-              setBackgroundImage(src)
-              setIsLoaded(true)
-              if (onLoad) onLoad()
-            }
-            img.src = src
+            setIsInView(true)
             observer.unobserve(entry.target)
           }
         })
@@ -101,22 +116,22 @@ export function LazyBackgroundImage({ src, children, className = '', onLoad, pri
       }
     )
 
-    if (containerRef.current) {
-      observer.observe(containerRef.current)
+    if (containerNode) {
+      observer.observe(containerNode)
     }
 
     return () => {
-      if (containerRef.current) {
-        observer.unobserve(containerRef.current)
+      if (containerNode) {
+        observer.unobserve(containerNode)
       }
     }
-  }, [src, priority, onLoad])
+  }, [shouldLoad])
 
   return (
     <div
       ref={containerRef}
       className={`${className} ${isLoaded ? 'bg-loaded' : 'bg-loading'}`}
-      style={backgroundImage ? { backgroundImage: `url("${backgroundImage}")` } : {}}
+      style={shouldLoad ? { backgroundImage: `url("${optimizedImage.src}")` } : {}}
     >
       {children}
     </div>
@@ -139,10 +154,10 @@ export function OptimizedPicture({ sources, alt, className = '', priority = fals
     const observer = new IntersectionObserver(
       entries => {
         entries.forEach(entry => {
-          if (entry.isIntersecting && imgRef.current) {
+          if (entry.isIntersecting && imageNode) {
             // Trigger the image loading by setting srcSet
-            if (imgRef.current.dataset.srcset) {
-              imgRef.current.srcSet = imgRef.current.dataset.srcset
+            if (imageNode.dataset.srcset) {
+              imageNode.srcSet = imageNode.dataset.srcset
             }
             observer.unobserve(entry.target)
           }
@@ -154,13 +169,15 @@ export function OptimizedPicture({ sources, alt, className = '', priority = fals
       }
     )
 
-    if (imgRef.current) {
-      observer.observe(imgRef.current)
+    const imageNode = imgRef.current
+
+    if (imageNode) {
+      observer.observe(imageNode)
     }
 
     return () => {
-      if (imgRef.current) {
-        observer.unobserve(imgRef.current)
+      if (imageNode) {
+        observer.unobserve(imageNode)
       }
     }
   }, [priority])

@@ -15,7 +15,7 @@ export default defineConfig({
   // Optimization configurations
   build: {
     // Enable minification
-    minify: false,
+    minify: 'oxc',
 
     // Code splitting configuration
     rollupOptions: {
