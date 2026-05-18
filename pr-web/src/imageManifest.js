@@ -43,6 +43,34 @@ export const imageManifest = {
       }
     ]
   },
+  "/Brand/purpose-recycling-logo.jpeg": {
+    "source": "/Brand/purpose-recycling-logo.jpeg",
+    "src": "/optimized/brand/purpose-recycling-logo-320w.webp",
+    "srcSet": "/optimized/brand/purpose-recycling-logo-320w.webp 320w, /optimized/brand/purpose-recycling-logo-520w.webp 520w, /optimized/brand/purpose-recycling-logo-760w.webp 760w",
+    "sizes": "(max-width: 768px) 220px, 320px",
+    "width": 760,
+    "height": 233,
+    "variants": [
+      {
+        "src": "/optimized/brand/purpose-recycling-logo-320w.webp",
+        "width": 320,
+        "height": 98,
+        "bytes": 3750
+      },
+      {
+        "src": "/optimized/brand/purpose-recycling-logo-520w.webp",
+        "width": 520,
+        "height": 160,
+        "bytes": 6070
+      },
+      {
+        "src": "/optimized/brand/purpose-recycling-logo-760w.webp",
+        "width": 760,
+        "height": 233,
+        "bytes": 8538
+      }
+    ]
+  },
   "/Header/1st Page.png": {
     "source": "/Header/1st Page.png",
     "src": "/optimized/header/1st-page-480w.webp",

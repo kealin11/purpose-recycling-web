@@ -14,6 +14,13 @@ const imageExtensions = new Set(['.jpg', '.jpeg', '.png'])
 
 const profiles = [
   {
+    match: (relativePath) => relativePath.startsWith(`Brand${path.sep}`),
+    widths: [320, 520, 760],
+    quality: 82,
+    maxBytesByWidth: { 320: 25000, 520: 45000, 760: 70000 },
+    sizes: '(max-width: 768px) 220px, 320px',
+  },
+  {
     match: (relativePath) => relativePath.startsWith(`Header${path.sep}`),
     widths: [480, 800, 1200, 1600],
     quality: 74,

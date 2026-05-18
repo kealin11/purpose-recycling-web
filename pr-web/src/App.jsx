@@ -66,6 +66,15 @@ function App() {
     }
   ]
 
+  const newsletterServices = [
+    'House Collection - Purpose-Driven Waste Separation',
+    'School Collection - Purposeful School Recycling',
+    'Business Collection - Waste Purpose Solutions',
+    'Purpose Clean-Out',
+    'Purpose Clean-Up Campaigns',
+    'Purpose Community Engagement & Awareness'
+  ]
+
   const team = [
     {
       id: 1,
@@ -335,12 +344,10 @@ function App() {
         <div className="navbar-container">
           <a href="#home" className="logo-section" aria-label="Purpose Recycling home">
             <LazyImage
-              src="/site-icon-logo-transparent.png"
+              src="/Brand/purpose-recycling-logo.jpeg"
               alt="Purpose Recycling"
               className="navbar-logo"
               priority
-              width="76"
-              height="76"
             />
           </a>
           <button
@@ -719,40 +726,75 @@ function App() {
                 action="https://formsubmit.co/info@purposerecycling.co.za"
                 method="POST"
               >
-                <input type="hidden" name="_subject" value="New Purpose Recycling website enquiry" />
+                <input type="hidden" name="_subject" value="New Purpose Recycling newsletter signup" />
                 <input type="hidden" name="_captcha" value="false" />
                 <input type="hidden" name="_template" value="table" />
 
-                <h3>Send Us A Message</h3>
-                <p className="contact-form-copy">Share your details and we will get back to you as soon as possible.</p>
+                <h3>Newsletter Sign Up</h3>
+                <p className="contact-form-copy">Please fill out the form below to sign up for our newsletter and receive updates directly to your inbox.</p>
 
                 <div className="contact-form-grid">
-                  <input type="text" name="first_name" placeholder="First Name" required />
-                  <input type="text" name="last_name" placeholder="Last Name" required />
+                  <label>
+                    <span>First Name</span>
+                    <input type="text" name="first_name" autoComplete="given-name" required />
+                  </label>
+                  <label>
+                    <span>Last Name</span>
+                    <input type="text" name="last_name" autoComplete="family-name" required />
+                  </label>
                 </div>
 
                 <div className="contact-form-grid">
-                  <input type="email" name="email" placeholder="Email Address" required />
-                  <input type="tel" name="phone" placeholder="Phone Number" />
+                  <label>
+                    <span>Email</span>
+                    <input type="email" name="email" autoComplete="email" required />
+                  </label>
+                  <label>
+                    <span>Phone</span>
+                    <input type="tel" name="phone" autoComplete="tel" />
+                  </label>
                 </div>
 
-                <select name="service_interest" defaultValue="">
-                  <option value="" disabled>Select A Service</option>
-                  {services.map((service) => (
-                    <option key={service.id} value={service.title}>
-                      {service.title}
-                    </option>
-                  ))}
-                </select>
+                <fieldset className="services-checkbox">
+                  <legend>Services</legend>
+                  <div className="checkbox-grid">
+                    {newsletterServices.map((service) => (
+                      <label key={service} className="checkbox-option">
+                        <input type="checkbox" name="services[]" value={service} />
+                        <span>{service}</span>
+                      </label>
+                    ))}
+                  </div>
+                </fieldset>
 
-                <textarea
-                  name="message"
-                  placeholder="Tell us how we can help"
-                  rows="5"
-                  required
-                />
+                <label className="contact-form-field">
+                  <span>Address Line 1</span>
+                  <input type="text" name="address_line_1" autoComplete="address-line1" />
+                </label>
 
-                <button type="submit" className="contact-submit">Send Enquiry</button>
+                <div className="contact-form-grid">
+                  <label>
+                    <span>City</span>
+                    <input type="text" name="city" autoComplete="address-level2" />
+                  </label>
+                  <label>
+                    <span>State / Region</span>
+                    <input type="text" name="state_region" autoComplete="address-level1" required />
+                  </label>
+                </div>
+
+                <div className="contact-form-grid">
+                  <label>
+                    <span>Postal Code</span>
+                    <input type="text" name="postal_code" autoComplete="postal-code" />
+                  </label>
+                  <label>
+                    <span>Country</span>
+                    <input type="text" name="country" autoComplete="country-name" />
+                  </label>
+                </div>
+
+                <button type="submit" className="contact-submit">Sign Up</button>
               </form>
 
               <div className="contact-map-card">
