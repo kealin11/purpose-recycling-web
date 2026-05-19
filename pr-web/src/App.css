@@ -607,6 +607,26 @@ img.loaded {
   box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
 }
 
+.cta-section .hero-button-white {
+  background: var(--accent-white);
+  color: var(--primary-green);
+  padding: 15px 40px;
+  border-radius: 30px;
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 16px;
+  display: inline-block;
+  transition: all 0.3s ease;
+  box-shadow: 0 12px 26px rgba(20, 52, 36, 0.25);
+  border: 2px solid var(--accent-white);
+}
+
+.cta-section .hero-button-white:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 16px 32px rgba(0, 0, 0, 0.25);
+  background: rgba(255, 255, 255, 0.95);
+}
+
 /* About Section */
 .about {
   padding: 80px 20px;
@@ -1130,9 +1150,15 @@ img.loaded {
 
 .contact-content {
   display: grid;
-  grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
+  grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.05fr);
   gap: 30px;
-  align-items: stretch;
+  align-items: start;
+}
+
+.contact-panel-wrapper {
+  display: grid;
+  gap: 22px;
+  grid-template-columns: 1fr;
 }
 
 .contact-panel {
@@ -1242,6 +1268,114 @@ img.loaded {
 .contact-side {
   display: grid;
   gap: 22px;
+  grid-template-columns: 1fr;
+}
+
+.contact-form {
+  background: rgba(255, 255, 255, 0.92);
+  border-radius: 28px;
+  padding: 28px;
+  border: 1px solid rgba(45, 134, 89, 0.1);
+  box-shadow: 0 12px 28px rgba(20, 52, 36, 0.07);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  transition: all 0.3s ease;
+}
+
+.contact-form:hover {
+  box-shadow: 0 16px 40px rgba(20, 52, 36, 0.12);
+  border-color: rgba(45, 134, 89, 0.15);
+}
+
+.contact-form-services {
+  border-top: 4px solid var(--primary-green);
+}
+
+.contact-form-address {
+  border-top: 4px solid var(--primary-yellow);
+}
+
+.contact-form h3 {
+  background: var(--gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  font-size: 24px;
+  margin-bottom: 10px;
+}
+
+.contact-form-subtitle {
+  background: var(--gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+
+.form-section {
+  border: none;
+  padding: 20px 0;
+  margin: 20px 0 0;
+  border-top: 1px solid rgba(45, 134, 89, 0.1);
+}
+
+.form-section:first-of-type {
+  margin-top: 0;
+  border-top: none;
+}
+
+.form-section legend {
+  background: var(--gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  font-size: 16px;
+  font-weight: 700;
+  padding: 0 0 12px;
+  width: 100%;
+}
+
+.services-description {
+  color: var(--text-light);
+  font-size: 14px;
+  margin-bottom: 14px;
+  margin-top: 10px;
+}
+
+.checkbox-grid-services {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 12px;
+}
+
+.form-success-message {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 16px 16px;
+  background: linear-gradient(135deg, rgba(47, 148, 92, 0.12), rgba(47, 148, 92, 0.06));
+  border: 2px solid rgba(47, 148, 92, 0.4);
+  border-radius: 12px;
+  color: var(--primary-green);
+  font-weight: 600;
+  font-size: 14px;
+  margin-bottom: 16px;
+  animation: slideDown 0.3s ease;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .contact-form,
@@ -1297,12 +1431,25 @@ img.loaded {
 .contact-form textarea {
   width: 100%;
   padding: 14px 16px;
-  border: 1px solid rgba(45, 134, 89, 0.16);
+  border: 2px solid rgba(45, 134, 89, 0.16);
   border-radius: 16px;
   font: inherit;
   color: var(--text-dark);
   background: rgba(255, 255, 255, 0.88);
-  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease, background 0.3s ease;
+}
+
+.contact-form input::placeholder,
+.contact-form textarea::placeholder {
+  color: var(--text-light);
+  opacity: 0.7;
+}
+
+.contact-form input:hover:not(:focus),
+.contact-form select:hover:not(:focus),
+.contact-form textarea:hover:not(:focus) {
+  border-color: rgba(45, 134, 89, 0.28);
+  background: rgba(255, 255, 255, 0.95);
 }
 
 .contact-form-field {
@@ -1337,6 +1484,14 @@ img.loaded {
   gap: 10px;
   color: var(--text-dark);
   line-height: 1.5;
+  display: grid;
+  cursor: pointer;
+  padding: 8px 0;
+  transition: color 0.2s ease;
+}
+
+.checkbox-option:hover {
+  color: var(--primary-green);
 }
 
 .checkbox-option input {
@@ -1344,6 +1499,8 @@ img.loaded {
   height: 18px;
   margin-top: 2px;
   accent-color: var(--primary-green);
+  cursor: pointer;
+  flex-shrink: 0;
 }
 
 .contact-form .checkbox-option span {
@@ -1375,12 +1532,21 @@ img.loaded {
   font-weight: 700;
   cursor: pointer;
   box-shadow: 0 14px 26px rgba(45, 134, 89, 0.22);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  transition: transform 0.3s ease, box-shadow 0.3s ease, opacity 0.3s ease;
+  width: 100%;
+  min-height: 48px;
+  margin-top: 10px;
 }
 
-.contact-submit:hover {
+.contact-submit:hover:not(:disabled) {
   transform: translateY(-2px);
   box-shadow: 0 18px 30px rgba(45, 134, 89, 0.26);
+}
+
+.contact-submit:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+  transform: none;
 }
 
 .contact-map-header {
@@ -1595,6 +1761,10 @@ img.loaded {
     grid-template-columns: 1fr;
   }
 
+  .contact-content {
+    grid-template-columns: 1fr;
+  }
+
   .contact-panel {
     padding: 24px 20px;
   }
@@ -1609,6 +1779,23 @@ img.loaded {
   }
 
   .contact-social-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .checkbox-grid-services {
+    grid-template-columns: 1fr;
+  }
+
+  .form-section {
+    padding: 16px 0;
+  }
+
+  .services-checkbox {
+    margin: 16px 0;
+    padding: 14px;
+  }
+
+  .contact-side {
     grid-template-columns: 1fr;
   }
 
@@ -1773,6 +1960,13 @@ img.loaded {
 @media (max-width: 1200px) {
   img {
     max-width: 100%;
+  }
+}
+
+/* Desktop form layout */
+@media (min-width: 1025px) {
+  .checkbox-grid-services {
+    grid-template-columns: repeat(2, 1fr);
   }
 }
 

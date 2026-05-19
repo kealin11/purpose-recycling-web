@@ -7,6 +7,28 @@ import { getOptimizedImage } from './imageUtils'
 function App() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const [selectedMaterial, setSelectedMaterial] = useState(null)
+  const [contactUsForm, setContactUsForm] = useState({
+    firstName: '',
+    lastName: '',
+    phone: '',
+    email: '',
+    services: []
+  })
+  const [joinHouseholdsForm, setJoinHouseholdsForm] = useState({
+    firstName: '',
+    lastName: '',
+    phone: '',
+    email: '',
+    address: '',
+    city: '',
+    province: '',
+    postalCode: '',
+    country: ''
+  })
+  const [contactUsFormSubmitting, setContactUsFormSubmitting] = useState(false)
+  const [joinHouseholdsFormSubmitting, setJoinHouseholdsFormSubmitting] = useState(false)
+  const [contactUsFormSuccess, setContactUsFormSuccess] = useState(false)
+  const [joinHouseholdsFormSuccess, setJoinHouseholdsFormSuccess] = useState(false)
 
   const headerSlides = [
     '/Header/1st Page.png',
@@ -246,6 +268,143 @@ function App() {
       website: 'https://phambiliservices.co.za/'
     }
   ]
+
+  const contactFormServices = [
+    'House Collection - Purpose-Driven Waste Separation',
+    'School Collection - Purposeful School Recycling',
+    'Business Collection - Waste Purpose Solutions',
+    'Purpose Clean-Out',
+    'Purpose Clean-Up Campaigns',
+    'Purpose Community Engagement & Awareness',
+  ]
+
+  const handleContactUsChange = (e) => {
+    const { name, value, type, checked } = e.target
+    if (type === 'checkbox') {
+      setContactUsForm(prev => ({
+        ...prev,
+        services: checked
+          ? [...prev.services, value]
+          : prev.services.filter(s => s !== value)
+      }))
+    } else {
+      setContactUsForm(prev => ({
+        ...prev,
+        [name]: value
+      }))
+    }
+  }
+
+  const handleJoinHouseholdsChange = (e) => {
+    const { name, value } = e.target
+    setJoinHouseholdsForm(prev => ({
+      ...prev,
+      [name]: value
+    }))
+  }
+
+  const handleContactUsSubmit = async (e) => {
+    e.preventDefault()
+    
+    // Validation
+    if (!contactUsForm.firstName || !contactUsForm.lastName || !contactUsForm.email || 
+        !contactUsForm.phone || contactUsForm.services.length === 0) {
+      alert('Please fill in all required fields and select at least one service.')
+      return
+    }
+
+    setContactUsFormSubmitting(true)
+    
+    try {
+      const formData = new FormData()
+      formData.append('_subject', 'New Contact Us Form Submission')
+      formData.append('_captcha', 'false')
+      formData.append('_template', 'table')
+      formData.append('firstName', contactUsForm.firstName)
+      formData.append('lastName', contactUsForm.lastName)
+      formData.append('phone', contactUsForm.phone)
+      formData.append('email', contactUsForm.email)
+      formData.append('services', contactUsForm.services.join(', '))
+
+      const response = await fetch('https://formsubmit.co/info@purposerecycling.co.za', {
+        method: 'POST',
+        body: formData
+      })
+
+      if (response.ok) {
+        setContactUsFormSuccess(true)
+        setContactUsForm({
+          firstName: '',
+          lastName: '',
+          phone: '',
+          email: '',
+          services: []
+        })
+        setTimeout(() => setContactUsFormSuccess(false), 5000)
+      }
+    } catch (error) {
+      console.error('Form submission error:', error)
+      alert('There was an error submitting the form. Please try again.')
+    } finally {
+      setContactUsFormSubmitting(false)
+    }
+  }
+
+  const handleJoinHouseholdsSubmit = async (e) => {
+    e.preventDefault()
+    
+    // Validation
+    if (!joinHouseholdsForm.firstName || !joinHouseholdsForm.lastName || !joinHouseholdsForm.email || 
+        !joinHouseholdsForm.phone || !joinHouseholdsForm.address || !joinHouseholdsForm.city || 
+        !joinHouseholdsForm.province || !joinHouseholdsForm.postalCode || !joinHouseholdsForm.country) {
+      alert('Please fill in all required fields.')
+      return
+    }
+
+    setJoinHouseholdsFormSubmitting(true)
+    
+    try {
+      const formData = new FormData()
+      formData.append('_subject', 'New Join 500+ Households Form Submission')
+      formData.append('_captcha', 'false')
+      formData.append('_template', 'table')
+      formData.append('firstName', joinHouseholdsForm.firstName)
+      formData.append('lastName', joinHouseholdsForm.lastName)
+      formData.append('phone', joinHouseholdsForm.phone)
+      formData.append('email', joinHouseholdsForm.email)
+      formData.append('address', joinHouseholdsForm.address)
+      formData.append('city', joinHouseholdsForm.city)
+      formData.append('province', joinHouseholdsForm.province)
+      formData.append('postalCode', joinHouseholdsForm.postalCode)
+      formData.append('country', joinHouseholdsForm.country)
+
+      const response = await fetch('https://formsubmit.co/info@purposerecycling.co.za', {
+        method: 'POST',
+        body: formData
+      })
+
+      if (response.ok) {
+        setJoinHouseholdsFormSuccess(true)
+        setJoinHouseholdsForm({
+          firstName: '',
+          lastName: '',
+          phone: '',
+          email: '',
+          address: '',
+          city: '',
+          province: '',
+          postalCode: '',
+          country: ''
+        })
+        setTimeout(() => setJoinHouseholdsFormSuccess(false), 5000)
+      }
+    } catch (error) {
+      console.error('Form submission error:', error)
+      alert('There was an error submitting the form. Please try again.')
+    } finally {
+      setJoinHouseholdsFormSubmitting(false)
+    }
+  }
 
   const recyclingMaterials = [
     {
@@ -496,12 +655,12 @@ function App() {
 
       {/* Call to Action Section */}
       <section className="cta-section" aria-label="Join Purpose Recycling households">
-        <a href="#contact" className="cta-container">
+        <div className="cta-container">
           <p className="cta-copy">By living these values, Purpose Recycling aims to make a meaningful impact in the communities we serve, promoting a cleaner, healthier, and more sustainable future for all.</p>
           <span className="cta-stat">Join 500+ Households</span>
           <h2>Let's Create A Greener, Cleaner South Africa.</h2>
-          <span className="hero-button">Contact Us</span>
-        </a>
+          <a href="#contact" className="hero-button-white">Contact Us</a>
+        </div>
       </section>
 
       {/* Meet the Team Section */}
@@ -660,141 +819,300 @@ function App() {
       <section id="contact" className="contact">
         <div className="container">
           <div className="contact-content">
-            <div className="contact-panel">
-              <span className="section-kicker">Contact Us</span>
-              <h2>Let's Work Together For A Cleaner Community</h2>
-              <p className="section-subtitle">We're eager to work with households, schools, businesses, and partners who want to protect our planet and strengthen our community.</p>
+            <div className="contact-panel-wrapper">
+              <div className="contact-panel">
+                <span className="section-kicker">Contact Us</span>
+                <h2>Let's Work Together For A Cleaner Community</h2>
+                <p className="section-subtitle">We're eager to work with households, schools, businesses, and partners who want to protect our planet and strengthen our community.</p>
 
-              <div className="contact-list">
-                <div className="contact-item">
-                  <span className="contact-icon">Call</span>
-                  <div>
-                    <h3>Phone</h3>
-                    {contactDetails.phones.map((phone) => (
-                      <a key={phone.value} href={phone.href} className="contact-link">
-                        {phone.value}
+                <div className="contact-list">
+                  <div className="contact-item">
+                    <span className="contact-icon">Call</span>
+                    <div>
+                      <h3>Phone</h3>
+                      {contactDetails.phones.map((phone) => (
+                        <a key={phone.value} href={phone.href} className="contact-link">
+                          {phone.value}
+                        </a>
+                      ))}
+                    </div>
+                  </div>
+
+                  <div className="contact-item">
+                    <span className="contact-icon">Mail</span>
+                    <div>
+                      <h3>Email</h3>
+                      {contactDetails.emails.map((email) => (
+                        <a key={email.value} href={email.href} className="contact-link">
+                          {email.value}
+                        </a>
+                      ))}
+                    </div>
+                  </div>
+
+                  <div className="contact-item">
+                    <span className="contact-icon">Pin</span>
+                    <div>
+                      <h3>Pin Location</h3>
+                      <a href={contactDetails.mapHref} target="_blank" rel="noreferrer" className="contact-link">
+                        {contactDetails.address}
+                      </a>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="contact-socials">
+                  <h3>Follow Purpose Recycling</h3>
+                  <div className="contact-social-grid">
+                    {contactDetails.socialLinks.map((social) => (
+                      <a
+                        key={social.id}
+                        href={social.href}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="contact-social-card"
+                      >
+                        <span className="contact-social-name">{social.name}</span>
+                        <span className="contact-social-handle">{social.handle}</span>
                       </a>
                     ))}
                   </div>
                 </div>
-
-                <div className="contact-item">
-                  <span className="contact-icon">Mail</span>
-                  <div>
-                    <h3>Email</h3>
-                    {contactDetails.emails.map((email) => (
-                      <a key={email.value} href={email.href} className="contact-link">
-                        {email.value}
-                      </a>
-                    ))}
-                  </div>
-                </div>
-
-                <div className="contact-item">
-                  <span className="contact-icon">Pin</span>
-                  <div>
-                    <h3>Pin Location</h3>
-                    <a href={contactDetails.mapHref} target="_blank" rel="noreferrer" className="contact-link">
-                      {contactDetails.address}
-                    </a>
-                  </div>
-                </div>
               </div>
 
-              <div className="contact-socials">
-                <h3>Follow Purpose Recycling</h3>
-                <div className="contact-social-grid">
-                  {contactDetails.socialLinks.map((social) => (
-                    <a
-                      key={social.id}
-                      href={social.href}
-                      target="_blank"
-                      rel="noreferrer"
-                      className="contact-social-card"
-                    >
-                      <span className="contact-social-name">{social.name}</span>
-                      <span className="contact-social-handle">{social.handle}</span>
-                    </a>
-                  ))}
-                </div>
-              </div>
-            </div>
-
-            <div className="contact-side">
+              {/* Contact Us Form - with services */}
               <form
-                className="contact-form"
-                action="https://formsubmit.co/info@purposerecycling.co.za"
-                method="POST"
+                className="contact-form contact-form-services"
+                onSubmit={handleContactUsSubmit}
               >
-                <input type="hidden" name="_subject" value="New Purpose Recycling newsletter signup" />
-                <input type="hidden" name="_captcha" value="false" />
-                <input type="hidden" name="_template" value="table" />
+                <h3>Get In Touch</h3>
+                <p className="contact-form-copy">Tell us about your recycling needs and we'll help you find the perfect solution.</p>
 
-                <h3>Newsletter Sign Up</h3>
-                <p className="contact-form-copy">Please fill out the form below to sign up for our newsletter and receive updates directly to your inbox.</p>
+                {contactUsFormSuccess && (
+                  <div className="form-success-message">
+                    ✓ Thank you! We've received your inquiry. We'll be in touch soon.
+                  </div>
+                )}
 
-                <div className="contact-form-grid">
-                  <label>
-                    <span>First Name</span>
-                    <input type="text" name="first_name" autoComplete="given-name" required />
-                  </label>
-                  <label>
-                    <span>Last Name</span>
-                    <input type="text" name="last_name" autoComplete="family-name" required />
-                  </label>
-                </div>
+                <fieldset className="form-section">
+                  <legend>Personal Information</legend>
+                  <div className="contact-form-grid">
+                    <label>
+                      <span>Name *</span>
+                      <input 
+                        type="text" 
+                        name="firstName" 
+                        value={contactUsForm.firstName}
+                        onChange={handleContactUsChange}
+                        autoComplete="given-name" 
+                        required 
+                      />
+                    </label>
+                    <label>
+                      <span>Surname *</span>
+                      <input 
+                        type="text" 
+                        name="lastName" 
+                        value={contactUsForm.lastName}
+                        onChange={handleContactUsChange}
+                        autoComplete="family-name" 
+                        required 
+                      />
+                    </label>
+                  </div>
+                  <div className="contact-form-grid">
+                    <label>
+                      <span>Email *</span>
+                      <input 
+                        type="email" 
+                        name="email" 
+                        value={contactUsForm.email}
+                        onChange={handleContactUsChange}
+                        autoComplete="email" 
+                        required 
+                      />
+                    </label>
+                    <label>
+                      <span>Phone Number *</span>
+                      <input 
+                        type="tel" 
+                        name="phone" 
+                        value={contactUsForm.phone}
+                        onChange={handleContactUsChange}
+                        autoComplete="tel" 
+                        required 
+                      />
+                    </label>
+                  </div>
+                </fieldset>
 
-                <div className="contact-form-grid">
-                  <label>
-                    <span>Email</span>
-                    <input type="email" name="email" autoComplete="email" required />
-                  </label>
-                  <label>
-                    <span>Phone</span>
-                    <input type="tel" name="phone" autoComplete="tel" />
-                  </label>
-                </div>
-
-                <fieldset className="services-checkbox">
-                  <legend>Services</legend>
-                  <div className="checkbox-grid">
-                    {newsletterServices.map((service) => (
+                <fieldset className="form-section services-checkbox">
+                  <legend>Services of Interest *</legend>
+                  <p className="services-description">Select one or more services you're interested in:</p>
+                  <div className="checkbox-grid checkbox-grid-services">
+                    {contactFormServices.map((service) => (
                       <label key={service} className="checkbox-option">
-                        <input type="checkbox" name="services[]" value={service} />
+                        <input 
+                          type="checkbox" 
+                          name="services" 
+                          value={service}
+                          checked={contactUsForm.services.includes(service)}
+                          onChange={handleContactUsChange}
+                        />
                         <span>{service}</span>
                       </label>
                     ))}
                   </div>
                 </fieldset>
 
-                <label className="contact-form-field">
-                  <span>Address Line 1</span>
-                  <input type="text" name="address_line_1" autoComplete="address-line1" />
-                </label>
+                <button 
+                  type="submit" 
+                  className="contact-submit"
+                  disabled={contactUsFormSubmitting}
+                >
+                  {contactUsFormSubmitting ? 'Sending...' : 'Send Message'}
+                </button>
+              </form>
+            </div>
 
-                <div className="contact-form-grid">
-                  <label>
-                    <span>City</span>
-                    <input type="text" name="city" autoComplete="address-level2" />
-                  </label>
-                  <label>
-                    <span>State / Region</span>
-                    <input type="text" name="state_region" autoComplete="address-level1" required />
-                  </label>
-                </div>
+            <div className="contact-side">
 
-                <div className="contact-form-grid">
-                  <label>
-                    <span>Postal Code</span>
-                    <input type="text" name="postal_code" autoComplete="postal-code" />
-                  </label>
-                  <label>
-                    <span>Country</span>
-                    <input type="text" name="country" autoComplete="country-name" />
-                  </label>
-                </div>
+              {/* Join 500+ Households Form - with address */}
+              <form
+                className="contact-form contact-form-address"
+                onSubmit={handleJoinHouseholdsSubmit}
+              >
+                <h3>Join 500+ Households</h3>
+                <p className="contact-form-copy">Sign up today and become part of our growing recycling community.</p>
 
-                <button type="submit" className="contact-submit">Sign Up</button>
+                {joinHouseholdsFormSuccess && (
+                  <div className="form-success-message">
+                    ✓ Thank you for signing up! We'll send you more information soon.
+                  </div>
+                )}
+
+                <fieldset className="form-section">
+                  <legend>Personal Information</legend>
+                  <div className="contact-form-grid">
+                    <label>
+                      <span>Name *</span>
+                      <input 
+                        type="text" 
+                        name="firstName" 
+                        value={joinHouseholdsForm.firstName}
+                        onChange={handleJoinHouseholdsChange}
+                        autoComplete="given-name" 
+                        required 
+                      />
+                    </label>
+                    <label>
+                      <span>Surname *</span>
+                      <input 
+                        type="text" 
+                        name="lastName" 
+                        value={joinHouseholdsForm.lastName}
+                        onChange={handleJoinHouseholdsChange}
+                        autoComplete="family-name" 
+                        required 
+                      />
+                    </label>
+                  </div>
+                  <div className="contact-form-grid">
+                    <label>
+                      <span>Email *</span>
+                      <input 
+                        type="email" 
+                        name="email" 
+                        value={joinHouseholdsForm.email}
+                        onChange={handleJoinHouseholdsChange}
+                        autoComplete="email" 
+                        required 
+                      />
+                    </label>
+                    <label>
+                      <span>Phone Number *</span>
+                      <input 
+                        type="tel" 
+                        name="phone" 
+                        value={joinHouseholdsForm.phone}
+                        onChange={handleJoinHouseholdsChange}
+                        autoComplete="tel" 
+                        required 
+                      />
+                    </label>
+                  </div>
+                </fieldset>
+
+                <fieldset className="form-section">
+                  <legend>Address Information</legend>
+                  <label className="contact-form-field">
+                    <span>Address *</span>
+                    <input 
+                      type="text" 
+                      name="address" 
+                      value={joinHouseholdsForm.address}
+                      onChange={handleJoinHouseholdsChange}
+                      autoComplete="address-line1" 
+                      required 
+                    />
+                  </label>
+                  <div className="contact-form-grid">
+                    <label>
+                      <span>City *</span>
+                      <input 
+                        type="text" 
+                        name="city" 
+                        value={joinHouseholdsForm.city}
+                        onChange={handleJoinHouseholdsChange}
+                        autoComplete="address-level2" 
+                        required 
+                      />
+                    </label>
+                    <label>
+                      <span>Province *</span>
+                      <input 
+                        type="text" 
+                        name="province" 
+                        value={joinHouseholdsForm.province}
+                        onChange={handleJoinHouseholdsChange}
+                        autoComplete="address-level1" 
+                        required 
+                      />
+                    </label>
+                  </div>
+                  <div className="contact-form-grid">
+                    <label>
+                      <span>Postal Code *</span>
+                      <input 
+                        type="text" 
+                        name="postalCode" 
+                        value={joinHouseholdsForm.postalCode}
+                        onChange={handleJoinHouseholdsChange}
+                        autoComplete="postal-code" 
+                        required 
+                      />
+                    </label>
+                    <label>
+                      <span>Country *</span>
+                      <input 
+                        type="text" 
+                        name="country" 
+                        value={joinHouseholdsForm.country}
+                        onChange={handleJoinHouseholdsChange}
+                        autoComplete="country-name" 
+                        required 
+                      />
+                    </label>
+                  </div>
+                </fieldset>
+
+                <button 
+                  type="submit" 
+                  className="contact-submit"
+                  disabled={joinHouseholdsFormSubmitting}
+                >
+                  {joinHouseholdsFormSubmitting ? 'Sending...' : 'Join Now'}
+                </button>
               </form>
 
               <div className="contact-map-card">
