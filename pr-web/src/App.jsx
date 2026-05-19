@@ -657,9 +657,9 @@ function App() {
       <section className="cta-section" aria-label="Join Purpose Recycling households">
         <div className="cta-container">
           <p className="cta-copy">By living these values, Purpose Recycling aims to make a meaningful impact in the communities we serve, promoting a cleaner, healthier, and more sustainable future for all.</p>
-          <span className="cta-stat">Join 500+ Households</span>
+          <a href="#join-households" className="cta-stat-button">Join 500+ Households</a>
           <h2>Let's Create A Greener, Cleaner South Africa.</h2>
-          <a href="#contact" className="hero-button-white">Contact Us</a>
+          <a href="#contact" className="hero-button">Contact Us</a>
         </div>
       </section>
 
@@ -979,6 +979,7 @@ function App() {
 
               {/* Join 500+ Households Form - with address */}
               <form
+                id="join-households"
                 className="contact-form contact-form-address"
                 onSubmit={handleJoinHouseholdsSubmit}
               >
