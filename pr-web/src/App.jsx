@@ -142,48 +142,34 @@ function App() {
     },
     {
       id: 7,
-      name: 'Maxwell Mauritz',
-      position: 'Waste Sorters',
-      image: '/Meet The Team/Maxwell Mauritz.jpg',
-      category: 'Operations'
-    },
-    {
-      id: 8,
-      name: 'Leevoo Lawrence',
-      position: 'Waste Sorters',
-      image: '/Meet The Team/Leevoo Lawrence.jpg',
-      category: 'Operations'
-    },
-    {
-      id: 9,
       name: 'Aljeandre Morgan',
       position: 'Waste Reclaimer',
       image: '/Meet The Team/Aljeandre Morgan.jpg',
       category: 'Operations'
     },
     {
-      id: 10,
+      id: 8,
       name: 'Ethan Taai',
       position: 'Waste Reclaimer',
       image: '/Meet The Team/Ethan Taai.jpg',
       category: 'Operations'
     },
     {
-      id: 11,
+      id: 9,
       name: 'Linroy Lewis',
       position: 'Data Analyst',
       image: '/Meet The Team/Linroy Lewis.jpg',
       category: 'Operations'
     },
     {
-      id: 12,
+      id: 10,
       name: 'Adrian Coxen',
       position: 'Waste Sorters',
       image: '/Meet The Team/Adrian Coxen.jpg',
       category: 'Operations'
     },
     {
-      id: 13,
+      id: 11,
       name: 'Michael Kok',
       position: 'Waste Reclaimer',
       image: '/Meet The Team/Michael Kok.jpg',
